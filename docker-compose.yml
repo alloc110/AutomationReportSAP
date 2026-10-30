@@ -1,0 +1,19 @@
+services:
+  playwright-sap:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sap_playwright_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      - RUN_AT_TIME=08:00
+      - RUN_ON_STARTUP=true
+    volumes:
+      # Mount thư mục lưu file và ảnh chụp lỗi ra máy host để dễ kiểm tra
+      - ./downloads:/app/downloads
+      - ./screenshots:/app/screenshots
+    # Cấu hình shm_size để tránh crash Chromium khi render các trang nặng
+    shm_size: '1gb'
